@@ -32,7 +32,7 @@ MySQL数据库与 Oracle、 SQL Server 等数据库相比，有其内核上的�
 
 ### 2.1.1 库名
 
-1. 【强制】库的名称必须控制在32个字符以内，相关模块的表名与表名之间尽量提现join的关系，如user表和user_login表。
+1. 【强制】库的名称必须控制在32个字符以内，相关模块的表名与表名之间尽量体现join的关系，如user表和user_login表。
 2. 【强制】库的名称格式：业务系统名称_子系统名，同一模块使用的表名尽量使用统一前缀。
 3. 【强制】一般分库名称命名格式是`库通配名_编号`，编号从0开始递增，比如`wenda_001`以时间进行分库的名称格式是“库通配名_时间”
 4. 【强制】创建数据库时必须显式指定字符集，并且字符集只能是utf8或者utf8mb4。创建数据库SQL举例：`create database db1 default character set utf8;`。
@@ -110,19 +110,19 @@ MySQL数据库与 Oracle、 SQL Server 等数据库相比，有其内核上的�
 
     CREATE TABLE user (
       `id` bigint(11) NOT NULL AUTO_INCREMENT,
-      `user_id` bigint(11) NOT NULL COMMENT ‘用户id’
+      `user_id` bigint(11) NOT NULL COMMENT '用户id',
       `username` varchar(45) NOT NULL COMMENT '真实姓名',
-      `email` varchar(30) NOT NULL COMMENT ‘用户邮箱’,
+      `email` varchar(30) NOT NULL COMMENT '用户邮箱',
       `nickname` varchar(45) NOT NULL COMMENT '昵称',
       `avatar` int(11) NOT NULL COMMENT '头像',
       `birthday` date NOT NULL COMMENT '生日',
       `sex` tinyint(4) DEFAULT '0' COMMENT '性别',
       `short_introduce` varchar(150) DEFAULT NULL COMMENT '一句话介绍自己，最多50个汉字',
       `user_resume` varchar(300) NOT NULL COMMENT '用户提交的简历存放地址',
-      `user_register_ip` int NOT NULL COMMENT ‘用户注册时的源ip’,
-      `create_time` timestamp NOT NULL COMMENT ‘用户记录创建的时间’,
-      `update_time` timestamp NOT NULL COMMENT ‘用户资料修改的时间’,
-      `user_review_status` tinyint NOT NULL COMMENT ‘用户资料审核状态，1为通过，2为审核中，3为未通过，4为还未提交审核’,
+      `user_register_ip` int NOT NULL COMMENT '用户注册时的源ip',
+      `create_time` timestamp NOT NULL COMMENT '用户记录创建的时间',
+      `update_time` timestamp NOT NULL COMMENT '用户资料修改的时间',
+      `user_review_status` tinyint NOT NULL COMMENT '用户资料审核状态，1为通过，2为审核中，3为未通过，4为还未提交审核',
       PRIMARY KEY (`id`),
       UNIQUE KEY `idx_user_id` (`user_id`),
       KEY `idx_username`(`username`),
@@ -172,7 +172,7 @@ MySQL数据库与 Oracle、 SQL Server 等数据库相比，有其内核上的�
 ### 2.2.4 排序和分组
 
 1. 【建议】减少使用`order by`，和业务沟通能不排序就不排序，或将排序放到程序端去做。`order by`、`group by`、`distinct`这些语句较为耗费CPU，数据库的CPU资源是极其宝贵的。
-2. 【建议】`order by`、`group by`、`distinct`这些SQL尽量利用索引直接检索出排序好的数据。如`where a=1 order by`可以利用`key(a,b)`。
+2. 【建议】`order by`、`group by`、`distinct`这些SQL尽量利用索引直接检索出排序好的数据。如`where a=1 order by b`可以利用`key(a,b)`。
 3. 【建议】包含了`order by`、`group by`、`distinct`这些查询的语句，where条件过滤出来的结果集请保持在1000行以内，否则SQL会很慢。
 
 ### 2.2.5 线上禁止使用的SQL语句
